@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Joyci Almeida - Luxury Studio</title>
+    <!-- The '/logo.png' path correctly points to 'public/logo.png' -->
+    <link rel="icon" type="image/png" href="/logo.png?v=3" />
+    <link rel="apple-touch-icon" href="/logo.png?v=3" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #0a0a0a;
+      }
+      .font-cinzel {
+        font-family: 'Cinzel', serif;
+      }
+
+      /* Shine effect for buttons on hover */
+      .shine-hover {
+        position: relative;
+        overflow: hidden;
+      }
+      .shine-hover::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -150%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+          100deg,
+          rgba(253, 224, 71, 0) 0%,
+          rgba(253, 224, 71, 0.25) 50%,
+          rgba(253, 224, 71, 0) 100%
+        );
+        transform: skewX(-25deg);
+        transition: left 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .shine-hover:hover::before {
+        left: 150%;
+      }
+
+      /* Golden Particles Animation */
+      .particle-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 2; /* Sits above watermark (z-0) but below content (z-10) */
+      }
+
+      .gold-particle {
+        position: absolute;
+        bottom: -20px;
+        background-color: #fde047; /* amber-300 */
+        border-radius: 50%;
+        animation: float-up linear infinite;
+        box-shadow: 0 0 8px 2px rgba(253, 224, 71, 0.4);
+      }
+
+      @keyframes float-up {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-110vh);
+          opacity: 0;
+        }
+      }
+
+      /* Fade-in animation for procedure selection */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      /* Custom Scrollbar Styles */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #18181b; /* zinc-900 */
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #fde047; /* amber-300 */
+        border-radius: 20px;
+        border: 2px solid #18181b; /* zinc-900, same as track */
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #fbbf24; /* amber-400 */
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.1/",
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
