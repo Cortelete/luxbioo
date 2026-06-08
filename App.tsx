@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import LinkButton from './components/LinkButton';
 import Modal from './components/Modal';
 import LocationModal from './components/LocationModal';
+import CatalogModal from './components/CatalogModal';
+import ReviewModal from './components/ReviewModal';
 import Footer from './components/Footer';
 import GoldenParticles from './components/GoldenParticles';
 import { FormData } from './types';
@@ -10,6 +12,8 @@ import { FormData } from './types';
 const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const [isCatalogModalOpen, setIsCatalogModalOpen] = useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [logoRotation, setLogoRotation] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -46,7 +50,7 @@ const App: React.FC = () => {
     
     const timePreferenceText = timeDetails.length > 0 ? timeDetails.join('\n') : "Nenhuma preferência de horário informada.";
 
-    const message = `Olá! Gostaria de agendar um horário.\n\n` +
+    const message = `Olá! Vi o app Luxury Studio e gostaria de agendar um horário.\n\n` +
                   `Nome: ${name}\n` +
                   `${clientStatusText}\n\n` +
                   `Procedimento(s): ${procedureText}\n\n` +
@@ -101,8 +105,11 @@ const App: React.FC = () => {
               <LinkButton onClick={() => setIsModalOpen(true)}>
                 Agendamentos via WhatsApp
               </LinkButton>
-              <LinkButton href="https://catalogolux.vercel.app/">
+              <LinkButton onClick={() => setIsCatalogModalOpen(true)}>
                 Nosso Catálogo
+              </LinkButton>
+              <LinkButton onClick={() => setIsReviewModalOpen(true)}>
+                Avaliação do Google
               </LinkButton>
             </div>
           </div>
@@ -124,6 +131,16 @@ const App: React.FC = () => {
       <LocationModal
         isOpen={isLocationModalOpen}
         onClose={() => setIsLocationModalOpen(false)}
+      />
+
+      <CatalogModal
+        isOpen={isCatalogModalOpen}
+        onClose={() => setIsCatalogModalOpen(false)}
+      />
+
+      <ReviewModal
+        isOpen={isReviewModalOpen}
+        onClose={() => setIsReviewModalOpen(false)}
       />
     </div>
   );
