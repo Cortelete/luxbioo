@@ -8,9 +8,10 @@ interface ModalProps {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   onSubmit: (e: React.FormEvent) => void;
+  professionalName?: string | undefined;
 }
 
-const procedures = {
+const proceduresTemplate = {
   [ProcedureCategory.LASH]: ['Lash Lifting', 'Extensão de Cílios'],
   [ProcedureCategory.BROWS]: ['Henna', 'Tintura', 'Brown Lamination', 'Design Feminino', 'Design Masculino'],
   [ProcedureCategory.SKIN]: ['Radiofrequência', 'Limpeza Profunda', 'Limpeza Relaxante'],
@@ -20,10 +21,35 @@ const procedures = {
 
 const weekDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formData, setFormData, onSubmit }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formData, setFormData, onSubmit, professionalName }) => {
   const [selectedCategories, setSelectedCategories] = useState<ProcedureCategory[]>([]);
   
   if (!isOpen) return null;
+
+  const isJoyci = professionalName?.includes('Joyci');
+
+  const getProceduresForCategory = (cat: ProcedureCategory) => {
+    return proceduresTemplate[cat].map(p => {
+        let isEmBreve = p.includes('(em breve)');
+        
+        if (isJoyci) {
+            if (p === 'Botox Day') {
+                isEmBreve = true;
+            }
+        } else {
+            if (cat !== ProcedureCategory.LASH) {
+                isEmBreve = true;
+            } else if (p === 'Lash Lifting') {
+                isEmBreve = true;
+            }
+        }
+
+        if (isEmBreve && !p.includes('(em breve)')) {
+            return `${p} (em breve)`;
+        }
+        return p;
+    });
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -71,7 +97,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formData, setFormData, o
     setSelectedCategories(newSelectedCategories);
 
     if (!newSelectedCategories.includes(category)) {
-      const proceduresToUncheck = procedures[category];
+      const proceduresToUncheck = getProceduresForCategory(category);
       setFormData((prev) => ({
         ...prev,
         procedure: prev.procedure.filter(
@@ -165,7 +191,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formData, setFormData, o
                                 <div key={category}>
                                 <p className="font-semibold text-amber-300/90 text-sm mb-2">{category}</p>
                                 <div className="space-y-2 pl-2 border-l-2 border-gray-700/50">
-                                    {procedures[category].map((item) => (
+                                    {getProceduresForCategory(category).map((item) => (
                                     <label key={item} className={`flex items-center space-x-3 group ${item.includes('(em breve)') ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}>
                                         <input type="checkbox" checked={formData.procedure.includes(item)} onChange={() => handleProcedureChange(item)} disabled={item.includes('(em breve)')} className="sr-only"/>
                                         <div className={`w-5 h-5 border-2 rounded-sm flex-shrink-0 flex items-center justify-center transition-all duration-200 ${formData.procedure.includes(item) ? 'bg-amber-400 border-amber-400' : 'border-gray-500 group-hover:border-amber-400'}`}>

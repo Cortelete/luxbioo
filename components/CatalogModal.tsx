@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { BookOpen, ExternalLink, Construction, User, MessageCircle, ChevronLeft } from 'lucide-react';
+import Modal from './Modal';
+import { FormData } from '../types';
 
 const InstagramIcon = ({ className }: { className?: string }) => (
   <svg 
@@ -57,10 +59,23 @@ const catalogs = [
 
 const CatalogModal: React.FC<CatalogModalProps> = ({ isOpen, onClose }) => {
   const [selectedPro, setSelectedPro] = useState<typeof catalogs[0] | null>(null);
+  const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    isClient: false,
+    preferredPeriods: [],
+    preferredWeekDays: [],
+    wantsSpecificDate: false,
+    specificDate: '',
+    procedure: [],
+  });
 
   React.useEffect(() => {
     if (!isOpen) {
-      setTimeout(() => setSelectedPro(null), 300);
+      setTimeout(() => {
+        setSelectedPro(null);
+        setIsWhatsAppModalOpen(false);
+      }, 300);
     }
   }, [isOpen]);
 
@@ -68,7 +83,48 @@ const CatalogModal: React.FC<CatalogModalProps> = ({ isOpen, onClose }) => {
 
   const handleClose = () => {
     setSelectedPro(null);
+    setIsWhatsAppModalOpen(false);
     onClose();
+  };
+
+  const handleWhatsAppSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedPro) return;
+    
+    const { name, isClient, preferredPeriods, preferredWeekDays, wantsSpecificDate, specificDate, procedure } = formData;
+    if (procedure.length === 0) return;
+
+    const procedureText = procedure.join(', ');
+    const clientStatusText = isClient ? "Já sou cliente." : "Sou um(a) novo(a) cliente.";
+
+    let timeDetails = [];
+    if (wantsSpecificDate && specificDate) {
+        const [year, month, day] = specificDate.split('-');
+        const formattedDate = `${day}/${month}/${year}`;
+        timeDetails.push(`Data específica: ${formattedDate}`);
+    } else {
+        if (preferredPeriods.length > 0) {
+            timeDetails.push(`Período(s): ${preferredPeriods.join(', ')}`);
+        }
+        if (preferredWeekDays.length > 0) {
+            timeDetails.push(`Dia(s) da semana: ${preferredWeekDays.join(', ')}`);
+        }
+    }
+    
+    const timePreferenceText = timeDetails.length > 0 ? timeDetails.join('\n') : "Nenhuma preferência de horário informada.";
+
+    const message = `Olá ${selectedPro.name.split(' ')[0]}! Vi seu perfil no app Luxury Studio e gostaria de agendar um horário.\n\n` +
+                  `Nome: ${name}\n` +
+                  `${clientStatusText}\n\n` +
+                  `Procedimento(s): ${procedureText}\n\n` +
+                  `Preferências de Horário:\n${timePreferenceText}\n\n` +
+                  `Aguardo contato, obrigado!`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=55${selectedPro.whatsapp}&text=${encodedMessage}`;
+    
+    window.open(whatsappUrl, '_blank');
+    setIsWhatsAppModalOpen(false);
   };
 
   return (
@@ -175,15 +231,13 @@ const CatalogModal: React.FC<CatalogModalProps> = ({ isOpen, onClose }) => {
             <p className="text-gray-400 text-xs sm:text-sm mb-6 text-center">{selectedPro.role}</p>
 
             <div className="w-full space-y-3">
-              <a
-                href={`https://api.whatsapp.com/send?phone=55${selectedPro.whatsapp}&text=${encodeURIComponent(`Olá ${selectedPro.name.split(' ')[0]}, vi seu perfil no app Luxury Studio e gostaria de saber mais sobre seus serviços.`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => setIsWhatsAppModalOpen(true)}
                 className="w-full flex items-center justify-center gap-2 bg-[#25D366]/20 hover:bg-[#25D366] text-[#25D366] hover:text-white border border-[#25D366]/50 py-2.5 px-4 rounded-lg transition-all duration-300 font-semibold text-xs sm:text-sm shadow-lg shadow-[#25D366]/10"
               >
                 <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-                Falar no WhatsApp
-              </a>
+                Agendar via WhatsApp
+              </button>
 
               <a
                 href={selectedPro.instagram}
@@ -210,6 +264,15 @@ const CatalogModal: React.FC<CatalogModalProps> = ({ isOpen, onClose }) => {
           </div>
         )}
       </div>
+
+      <Modal 
+        isOpen={isWhatsAppModalOpen}
+        onClose={() => setIsWhatsAppModalOpen(false)}
+        formData={formData}
+        setFormData={setFormData}
+        onSubmit={handleWhatsAppSubmit}
+        professionalName={selectedPro?.name}
+      />
     </div>
   );
 };
