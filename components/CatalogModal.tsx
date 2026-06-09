@@ -43,7 +43,7 @@ const catalogs = [
     link: '#',
     status: 'construction',
     role: 'Lash Designer',
-    instagram: 'https://www.instagram.com/lash_lohainemiranda',
+    instagram: 'https://www.instagram.com/lash_lorrainemiranda',
     whatsapp: '42998568443'
   },
   {
