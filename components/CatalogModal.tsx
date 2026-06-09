@@ -54,6 +54,15 @@ const catalogs = [
     role: 'Lash Designer',
     instagram: 'https://www.instagram.com/ingridbley.lash',
     whatsapp: '42999018270'
+  },
+  {
+    name: 'Elaine de Goes',
+    photo: '/elaine.png',
+    link: '#',
+    status: 'construction',
+    role: 'Maquiadora',
+    instagram: 'https://www.instagram.com/makeup.elainegoes',
+    whatsapp: '42988034771'
   }
 ];
 

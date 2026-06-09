@@ -17,6 +17,7 @@ const proceduresTemplate = {
   [ProcedureCategory.SKIN]: ['Radiofrequência', 'Limpeza Profunda', 'Limpeza Relaxante'],
   [ProcedureCategory.BOTOX]: ['Botox Day'],
   [ProcedureCategory.NANO]: ['Nanopigmentação (em breve)'],
+  [ProcedureCategory.MAKEUP]: ['Maquiagem'],
 };
 
 const weekDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -27,13 +28,18 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formData, setFormData, o
   if (!isOpen) return null;
 
   const isJoyci = professionalName?.includes('Joyci');
+  const isElaine = professionalName?.includes('Elaine');
 
   const getProceduresForCategory = (cat: ProcedureCategory) => {
     return proceduresTemplate[cat].map(p => {
         let isEmBreve = p.includes('(em breve)');
         
         if (isJoyci) {
-            if (p === 'Botox Day') {
+            if (p === 'Botox Day' || cat === ProcedureCategory.MAKEUP) {
+                isEmBreve = true;
+            }
+        } else if (isElaine) {
+            if (cat !== ProcedureCategory.MAKEUP) {
                 isEmBreve = true;
             }
         } else {
