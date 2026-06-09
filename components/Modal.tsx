@@ -25,10 +25,20 @@ const weekDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formData, setFormData, onSubmit, professionalName }) => {
   const [selectedCategories, setSelectedCategories] = useState<ProcedureCategory[]>([]);
   
-  if (!isOpen) return null;
-
   const isJoyci = professionalName?.includes('Joyci');
   const isElaine = professionalName?.includes('Elaine');
+
+  const availableCategories = isElaine
+    ? [ProcedureCategory.MAKEUP]
+    : Object.values(ProcedureCategory);
+
+  React.useEffect(() => {
+    if (isOpen && isElaine && !selectedCategories.includes(ProcedureCategory.MAKEUP)) {
+      setSelectedCategories([ProcedureCategory.MAKEUP]);
+    }
+  }, [isOpen, isElaine, selectedCategories]);
+
+  if (!isOpen) return null;
 
   const getProceduresForCategory = (cat: ProcedureCategory) => {
     return proceduresTemplate[cat].map(p => {
@@ -37,6 +47,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formData, setFormData, o
         if (isJoyci) {
             if (p === 'Botox Day' || cat === ProcedureCategory.MAKEUP) {
                 isEmBreve = true;
+            } else if (cat === ProcedureCategory.NANO) {
+                isEmBreve = false;
             }
         } else if (isElaine) {
             if (cat !== ProcedureCategory.MAKEUP) {
@@ -52,6 +64,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formData, setFormData, o
 
         if (isEmBreve && !p.includes('(em breve)')) {
             return `${p} (em breve)`;
+        } else if (!isEmBreve && p.includes('(em breve)')) {
+            return p.replace(' (em breve)', '');
         }
         return p;
     });
@@ -177,7 +191,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formData, setFormData, o
                     <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">Qual serviço?</label>
                         <div className="space-y-2 rounded-lg border border-gray-700 p-3">
-                            {Object.values(ProcedureCategory).map((cat) => (
+                            {availableCategories.map((cat) => (
                             <label key={cat} className="flex items-center space-x-3 group cursor-pointer">
                                 <input type="checkbox" checked={selectedCategories.includes(cat)} onChange={() => handleCategoryChange(cat)} className="sr-only"/>
                                 <div className={`w-5 h-5 border-2 rounded-sm flex-shrink-0 flex items-center justify-center transition-all duration-200 ${selectedCategories.includes(cat) ? 'bg-amber-400 border-amber-400' : 'border-gray-500 group-hover:border-amber-400'}`}>
