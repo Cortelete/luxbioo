@@ -20,7 +20,7 @@ const App: React.FC = () => {
       
       <GoldenParticles />
 
-      <div className="relative z-10 w-full max-w-[340px] mx-auto bg-zinc-950/80 backdrop-blur-xl border border-amber-300/20 shadow-2xl shadow-amber-900/20 rounded-3xl p-5 sm:p-6 flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-[340px] sm:max-w-[380px] mx-auto card-gradient-bg backdrop-blur-xl border border-amber-300/20 shadow-2xl shadow-amber-900/20 rounded-3xl p-5 sm:p-6 flex flex-col items-center">
         <main className="w-full flex flex-col items-center justify-center flex-grow">
           <header className="relative text-center mb-6 mt-0">
             <div className="relative inline-block mb-3">
@@ -28,7 +28,7 @@ const App: React.FC = () => {
               <img 
                 src="/logo.png?v=3" 
                 alt="Luxury Studio by Joyci Almeida Logo" 
-                className="w-24 sm:w-32 h-auto mx-auto cursor-pointer touch-manipulation hover:scale-105" 
+                className="w-40 sm:w-48 h-auto mx-auto cursor-pointer touch-manipulation hover:scale-105" 
                 style={{ 
                   transform: `perspective(1000px) rotateY(${logoFlip}deg)`, 
                   transition: 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)' 
