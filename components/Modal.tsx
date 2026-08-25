@@ -17,7 +17,6 @@ const proceduresTemplate = {
   [ProcedureCategory.SKIN]: ['Radiofrequência', 'Limpeza Profunda', 'Limpeza Relaxante'],
   [ProcedureCategory.BOTOX]: ['Botox Day'],
   [ProcedureCategory.NANO]: ['Nanopigmentação (em breve)'],
-  [ProcedureCategory.MAKEUP]: ['Maquiagem'],
 };
 
 const weekDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -26,17 +25,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formData, setFormData, o
   const [selectedCategories, setSelectedCategories] = useState<ProcedureCategory[]>([]);
   
   const isJoyci = professionalName?.includes('Joyci');
-  const isElaine = professionalName?.includes('Elaine');
-
-  const availableCategories = isElaine
-    ? [ProcedureCategory.MAKEUP]
-    : Object.values(ProcedureCategory);
-
-  React.useEffect(() => {
-    if (isOpen && isElaine && !selectedCategories.includes(ProcedureCategory.MAKEUP)) {
-      setSelectedCategories([ProcedureCategory.MAKEUP]);
-    }
-  }, [isOpen, isElaine, selectedCategories]);
+  const availableCategories = Object.values(ProcedureCategory);
 
   if (!isOpen) return null;
 
@@ -45,14 +34,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, formData, setFormData, o
         let isEmBreve = p.includes('(em breve)');
         
         if (isJoyci) {
-            if (p === 'Botox Day' || cat === ProcedureCategory.MAKEUP) {
+            if (p === 'Botox Day') {
                 isEmBreve = true;
             } else if (cat === ProcedureCategory.NANO) {
                 isEmBreve = false;
-            }
-        } else if (isElaine) {
-            if (cat !== ProcedureCategory.MAKEUP) {
-                isEmBreve = true;
             }
         } else {
             if (cat !== ProcedureCategory.LASH) {

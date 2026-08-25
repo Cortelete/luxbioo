@@ -14,5 +14,4 @@ export enum ProcedureCategory {
   SKIN = 'Limpeza de Pele',
   BOTOX = 'Botox Day',
   NANO = 'Nanopigmentação',
-  MAKEUP = 'Maquiagem',
 }
