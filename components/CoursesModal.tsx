@@ -41,13 +41,13 @@ const CoursesModal: React.FC<CoursesModalProps> = ({ isOpen, onClose }) => {
 
           <div className="w-full space-y-4">
             <a
-              href="http://luxacademy.vercel.app"
+              href="https://luxacademy.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="group w-full flex items-center justify-between bg-zinc-900 border border-amber-900/40 hover:border-amber-400/50 p-4 rounded-xl transition-all duration-300"
             >
               <div className="flex flex-col text-left">
-                <span className="font-semibold text-amber-200 group-hover:text-amber-100 transition-colors">Curso de Lash</span>
+                <span className="font-semibold text-amber-200 group-hover:text-amber-100 transition-colors">Lash e Brow Designer</span>
                 <span className="text-xs text-stone-400 mt-1 flex items-center gap-1">
                   Lux Academy <ExternalLink size={12} />
                 </span>
@@ -57,19 +57,22 @@ const CoursesModal: React.FC<CoursesModalProps> = ({ isOpen, onClose }) => {
               </div>
             </a>
 
-            <div className="w-full flex items-center justify-between bg-zinc-900/50 border border-zinc-800 p-4 rounded-xl opacity-80 cursor-not-allowed">
+            <a
+              href="https://cursoslux.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group w-full flex items-center justify-between bg-zinc-900 border border-amber-900/40 hover:border-amber-400/50 p-4 rounded-xl transition-all duration-300"
+            >
               <div className="flex flex-col text-left">
-                <span className="font-semibold text-stone-300">Sobrancelhas Perfeitas</span>
-                <span className="text-xs text-amber-400/70 mt-1 flex items-center gap-1">
-                  <Clock size={12} /> Em breve
+                <span className="font-semibold text-amber-200 group-hover:text-amber-100 transition-colors">Conheça os Cursos</span>
+                <span className="text-xs text-stone-400 mt-1 flex items-center gap-1">
+                  Pacotes e Ementas <ExternalLink size={12} />
                 </span>
               </div>
-              <div className="text-zinc-600">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
+              <div className="bg-amber-400/10 p-2 rounded-lg group-hover:bg-amber-400 group-hover:text-black text-amber-500 transition-colors">
+                <ExternalLink size={20} />
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
